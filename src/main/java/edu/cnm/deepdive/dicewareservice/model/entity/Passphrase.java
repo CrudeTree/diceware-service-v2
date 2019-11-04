@@ -8,14 +8,18 @@ import javax.annotation.PostConstruct;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Pattern;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityLinks;
@@ -39,6 +43,12 @@ public class Passphrase {
   @Column(nullable = false, updatable = false)
   private Date created;
 
+  @JsonIgnore
+  @NonNull
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "user_id", nullable = false, updatable = false)
+  private User user;
+
   @NonNull
   @Column(name = "passkey", nullable = false, length = 20, unique = true)
   @Pattern(regexp = "^\\D.*")
@@ -54,6 +64,15 @@ public class Passphrase {
 
   public Date getCreated() {
     return created;
+  }
+
+  @NonNull
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(@NonNull User user) {
+    this.user = user;
   }
 
   public String getKey() {

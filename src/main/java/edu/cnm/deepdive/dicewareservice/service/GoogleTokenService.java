@@ -31,13 +31,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class GoogleTokenService implements ResourceServerTokenServices {
 
-  @Value("${oauth.clientId")
   private final String clientId;
   private final UserService userService;
   private final AccessTokenConverter converter = new DefaultAccessTokenConverter();
 
   @Autowired
-  public GoogleTokenService(@Value("${oauth.clientId") String clientId,
+  public GoogleTokenService(@Value("${oauth.clientId}") String clientId,
       UserService userService) {
     this.clientId = clientId;
     this.userService = userService;
